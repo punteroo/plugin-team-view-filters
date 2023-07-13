@@ -2,6 +2,7 @@
  * Example TaskQueue names for the filter seen in this example repo.
  *
  * This example filter will look for TaskQueue queue names, you can adapt this to whatever you want.
+ * Ideally you would want to define this list outside the plugin to not hard-code it, keep in mind this is an example.
  */
 export const queues = {
   Commercial: [

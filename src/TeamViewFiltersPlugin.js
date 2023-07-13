@@ -1,16 +1,10 @@
-import React from 'react';
-import { TeamsView } from '@twilio/flex-ui';
-import { FlexPlugin } from '@twilio/flex-plugin';
+import { TeamsView } from "@twilio/flex-ui";
+import { FlexPlugin } from "@twilio/flex-plugin";
+import { CustomizationProvider } from '@twilio-paste/core/customization';
 
-import {
-  extensionFilter,
-  queueFilter,
-  companyFilter,
-  departmentFilter,
-  teamFilter
-} from './filters';
+import { QueueGroupFilter } from "./filters";
 
-const PLUGIN_NAME = 'TeamViewFiltersPlugin';
+const PLUGIN_NAME = "TeamViewFiltersPlugin";
 
 export default class TeamViewFiltersPlugin extends FlexPlugin {
   constructor() {
@@ -25,19 +19,21 @@ export default class TeamViewFiltersPlugin extends FlexPlugin {
    * @param manager { import('@twilio/flex-ui').Manager }
    */
   init(flex, manager) {
+    // Load twilio-paste theme.
+    flex.setProviders({
+      PasteThemeProvider: CustomizationProvider,
+    });
+
+    // PD: This might be deprecated, just placing it in case it works as backwards compatibility. It doesn't affect if it's not present.
     manager.updateConfig({
       componentProps: {
         TeamsView: {
-          filters: [
-            TeamsView.activitiesFilter,
-            extensionFilter,
-            queueFilter,
-            companyFilter,
-            departmentFilter,
-            teamFilter
-          ]
-        }
-      }
+          filters: [TeamsView.activitiesFilter, QueueGroupFilter],
+        },
+      },
     });
+
+    // Add the filter.
+    TeamsView.defaultProps.filters = [TeamsView.activitiesFilter, QueueGroupFilter];
   }
 }

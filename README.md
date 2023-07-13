@@ -1,22 +1,18 @@
-# Custom Twilio Flex Team View Filters
+# Flex UI v2.x - Custom TeamsView Filters Fix
+This is a fork of [the official Twilio repo](https://github.com/twilio-professional-services/plugin-team-view-filters) to workaround a bug on custom filters present on UI v2.3.2
 
-## Notice
-This plugin is no longer maintained as of October 17th, 2022. Work to maintain this feature in Flex V2 has been moved over to the [Twilio Professional Services Flex Project Template](https://github.com/twilio-professional-services/twilio-proserv-flex-project-template) where it is an [optional feature](https://github.com/twilio-professional-services/flex-project-template/blob/main/plugin-flex-ts-template-v2/src/feature-library/teams-view-filters/README.md)
+## Disclaimer and Notice
+⚠️ A bug is present on Flex UI v2.3.2 in filter definitions where **options should have the same value both on `label` and `value`** or else they won't work (even when the actual query is formed with the `value` property). Keep this in mind when looking through the code to know why it's programmed that way, it's on purpose. I've left comments in-code for every weird thing done to make this work explaining exactly why.
+
+Keep an eye on the Flex UI update notes to know when this is fixed, this has already been reported.
 
 ## Flex Plugins
 Twilio Flex Plugins allow you to customize the appearance and behavior of [Twilio Flex](https://www.twilio.com/flex). If you want to learn more about the capabilities and how to use the API, check out our [Flex documentation](https://www.twilio.com/docs/flex).
 
 ## Overview
-The Twilio Flex Team View allows for real-time monitoring of Flex agents and supports filtering those agents based on Twilio TaskRouter worker attributes. This plugin provides samples for creating three types of Team View filters:
+The Twilio Flex Team View allows for real-time monitoring of Flex agents and supports filtering those agents based on Twilio TaskRouter worker attributes. This plugin allows the usage of checkboxes with different label names while internally using a workaround to make `multiValue` filters [like the one seen in the official docs](https://www.twilio.com/docs/flex/developer/ui/team-view-filters#add-a-multivalue-field) work.
 
-### Multi-Option Checkbox Filter
-![Multi-Option Checkbox Filter](images/multi-option-checkbox-filter.png)
-
-### Free Text Filter
-![Free Text Filter](images/free-text-filter.png)
-
-### Autocomplete Multi-Select Filter
-![Autocomplete Multi-Select Filter](images/autocomplete-multi-select-filter.png)
+If you wish to see examples of implementing other types of filters, use the one set here as an example to modify yours and adapt accordingly.
 
 ## Requirements
 
@@ -24,7 +20,6 @@ The Twilio Flex Team View allows for real-time monitoring of Flex agents and sup
 
 To use this plugin, you should enable the Team View Filters feature on your Flex instance, and you can do that on the [pre-release features page](https://flex.twilio.com/admin/features/). On the Feature Settings page, go to the _Pilot_ tab, and enable the _Advanced Teams Views Filters_.
 
-![Enable Advanced Teams Views Filters](images/enable-advanced-teams-views-fitlers.gif)
 
 ## Setup
 
@@ -33,25 +28,22 @@ Make sure you have [Node.js](https://nodejs.org) as well as [`npm`](https://npmj
 Afterwards, install the dependencies by running `npm install`:
 
 ```bash
-cd 
+$ cd plugin-team-view-filters
+$ npm i
 
-# If you use npm
-npm install
+# In case you get dependency errors when installing `@twilio-paste/core` and `@twilio-paste/icons`
+$ npm i --legacy-peer-deps
 ```
 
 ## Development
 
-In order to develop locally, you can use the Webpack Dev Server by running:
+In order to develop locally, you can use the **Twilio CLI** to deploy a local Flex UI server:
 
 ```bash
-npm start
+$ twilio flex plugins start -l debug
 ```
 
-This will automatically start up the Webpack Dev Server and open the browser for you. Your app will run on `http://localhost:3000`. If you want to change that you can do this by setting the `PORT` environment variable:
-
-```bash
-PORT=3001 npm start
-```
+This will automatically start up Flex UI and open the browser for you. Your app will run on `http://localhost:3000`. If you want to change that you can do this by setting the `PORT` environment variable:
 
 When you make changes to your code, the browser window will be automatically refreshed.
 
@@ -90,6 +82,3 @@ Run $ twilio flex:plugins:release --plugin plugin-team-view-filters@1.0.0 --name
 For more details on deploying your plugin, refer to the [deploying your plugin guide](https://www.twilio.com/docs/flex/developer/plugins/cli/deploy-and-release).
 
 Note: Common packages like `React`, `ReactDOM`, `Redux` and `ReactRedux` are not bundled with the build because they are treated as external dependencies so the plugin will depend on Flex to provide them globally.
-
-## Disclaimer
-This software is to be considered "sample code", a Type B Deliverable, and is delivered "as-is" to the user. Twilio bears no responsibility to support the use or implementation of this software.
